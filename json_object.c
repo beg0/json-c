@@ -1015,6 +1015,45 @@ struct json_object* json_object_new_string_len(const char *s, int len)
 	return jso;
 }
 
+
+struct json_object* json_object_new_stringf(const char *fmt, ...)
+{
+	struct json_object *jso = json_object_new(json_type_string);
+	va_list ap;
+	if (!jso)
+		return NULL;
+	jso->_delete = &json_object_string_delete;
+	jso->_to_json_string = &json_object_string_to_json_string;
+
+	// Compute string len
+	va_start(ap, fmt);
+	jso->o.c_string.len = vsnprintf(jso->o.c_string.str.data, LEN_DIRECT_STRING_DATA, fmt, ap);
+	va_end(ap);
+
+	if(jso->o.c_string.len < 0)
+	{
+		json_object_generic_delete(jso);
+		return NULL;
+	}
+
+	// Direct storage too short? move to malloc()
+	if(jso->o.c_string.len >= LEN_DIRECT_STRING_DATA) {
+		jso->o.c_string.str.ptr = (char*)malloc(jso->o.c_string.len + 1);
+		if (!jso->o.c_string.str.ptr)
+		{
+			json_object_generic_delete(jso);
+			errno = ENOMEM;
+			return NULL;
+		}
+
+		va_start(ap,fmt);
+		(void)vsnprintf(jso->o.c_string.str.ptr, jso->o.c_string.len+1, fmt, ap);
+		va_end(ap);
+
+	}
+	return jso;
+}
+
 const char* json_object_get_string(struct json_object *jso)
 {
 	if (!jso)

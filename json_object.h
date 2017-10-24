@@ -880,6 +880,16 @@ JSON_EXPORT struct json_object* json_object_new_string(const char *s);
 
 JSON_EXPORT struct json_object* json_object_new_string_len(const char *s, int len);
 
+/** Create a new json_object of type json_type_string in a printf()-like way
+ *
+ * A copy of the string is made and the memory is managed by the json_object
+ *
+ * @param fmt the format string, interpreted as printf() family of functions
+ * @param ... additional arguments to be inserted in string
+ * @returns a json_object of type json_type_string
+ */
+JSON_EXPORT struct json_object* json_object_new_stringf(const char* fmt, ...);
+
 /** Get the string value of a json_object
  *
  * If the passed object is of type json_type_null (i.e. obj == NULL),

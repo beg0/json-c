@@ -1016,19 +1016,19 @@ struct json_object* json_object_new_string_len(const char *s, int len)
 }
 
 
-struct json_object* json_object_new_stringf(const char *fmt, ...)
+struct json_object* json_object_new_stringvf(const char *fmt, va_list ap)
 {
 	struct json_object *jso = json_object_new(json_type_string);
-	va_list ap;
+	va_list ap_copy;
 	if (!jso)
 		return NULL;
 	jso->_delete = &json_object_string_delete;
 	jso->_to_json_string = &json_object_string_to_json_string;
 
+	va_copy(ap_copy, ap);
+
 	// Compute string len
-	va_start(ap, fmt);
 	jso->o.c_string.len = vsnprintf(jso->o.c_string.str.data, LEN_DIRECT_STRING_DATA, fmt, ap);
-	va_end(ap);
 
 	if(jso->o.c_string.len < 0)
 	{
@@ -1046,11 +1046,18 @@ struct json_object* json_object_new_stringf(const char *fmt, ...)
 			return NULL;
 		}
 
-		va_start(ap,fmt);
-		(void)vsnprintf(jso->o.c_string.str.ptr, jso->o.c_string.len+1, fmt, ap);
-		va_end(ap);
-
+		(void)vsnprintf(jso->o.c_string.str.ptr, jso->o.c_string.len+1, fmt, ap_copy);
 	}
+	return jso;
+}
+
+struct json_object* json_object_new_stringf(const char *fmt, ...)
+{
+	struct json_object *jso = NULL;
+	va_list ap;
+	va_start(ap, fmt);
+	jso = json_object_new_stringvf(fmt, ap);
+	va_end(ap);
 	return jso;
 }
 

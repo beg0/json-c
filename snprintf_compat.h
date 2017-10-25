@@ -33,4 +33,9 @@ static int json_c_snprintf(char *str, size_t size, const char *format, ...)
 # error Need vsnprintf!
 #endif /* !HAVE_SNPRINTF && defined(WIN32) */
 
+#if defined(_MSC_VER)
+#define va_copy(dest, src) (dest = src)
+#endif
+
+
 #endif /* __snprintf_compat_h */

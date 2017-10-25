@@ -30,6 +30,7 @@
 #endif
 
 #include <stddef.h>
+#include <stdarg.h>
 #include "json_inttypes.h"
 
 #ifdef __cplusplus
@@ -889,6 +890,8 @@ JSON_EXPORT struct json_object* json_object_new_string_len(const char *s, int le
  * @returns a json_object of type json_type_string
  */
 JSON_EXPORT struct json_object* json_object_new_stringf(const char* fmt, ...);
+
+JSON_EXPORT struct json_object* json_object_new_stringvf(const char* fmt, va_list ap);
 
 /** Get the string value of a json_object
  *

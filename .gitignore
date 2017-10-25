@@ -37,6 +37,7 @@
 /tests/test_set_value
 /tests/test_util_file
 /tests/test_visit
+/tests/test_add_wrapper
 /tests/*.vg.out
 /tests/*.log
 /tests/*.trs

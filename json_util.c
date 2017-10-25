@@ -237,3 +237,57 @@ const char *json_type_to_name(enum json_type o_type)
 	return json_type_name[o_type];
 }
 
+// Wrapper arround json_object_object_add() to handle errors around json_object creation and addition
+// Used for all json_object_object_add_*() functions
+static json_object *json_object_object_add_wrapper(json_object* obj, const char* key, json_object* val)
+{
+	int status = 0;
+
+	if(!val)
+		return NULL;
+
+	status = json_object_object_add(obj, key, val);
+
+	if(status < 0)
+	{
+		json_object_put(val);
+		return NULL;
+	}
+	return val;
+}
+
+json_object *json_object_object_add_int(json_object* obj, const char* key, int32_t val)
+{
+	return json_object_object_add_wrapper(obj, key, json_object_new_int(val));
+}
+
+json_object *json_object_object_add_int64(json_object* obj, const char* key, int64_t val)
+{
+	return json_object_object_add_wrapper(obj, key, json_object_new_int64(val));
+}
+
+json_object *json_object_object_add_double(json_object* obj, const char* key, double val)
+{
+	return json_object_object_add_wrapper(obj, key, json_object_new_double(val));
+}
+
+json_object *json_object_object_add_boolean(json_object* obj, const char* key, json_bool val)
+{
+	return json_object_object_add_wrapper(obj, key, json_object_new_boolean(val));
+}
+
+json_object *json_object_object_add_string(json_object* obj, const char* key, const char* val)
+{
+	return json_object_object_add_wrapper(obj, key, json_object_new_string(val));
+}
+
+json_object *json_object_object_add_stringf(json_object* obj, const char* key, const char* fmt, ...)
+{
+	json_object* ret;
+	va_list ap;
+	va_start(ap, fmt);
+	ret = json_object_object_add_wrapper(obj, key, json_object_new_stringvf(fmt, ap));
+	va_end(ap);
+	return ret;
+}
+

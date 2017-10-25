@@ -1,0 +1,1 @@
+my_object.to_string()={ "int": 42, "int64": 149597870691, "double": 3.1415920000000002, "boolean": true, "string": "value", "formated_string": "formated string" }

@@ -93,6 +93,78 @@ extern int json_parse_double(const char *buf, double *retval);
  */
 extern const char *json_type_to_name(enum json_type o_type);
 
+/**
+ * Syntactic sugar to combine json_object_object_add() with json_object_new_int()
+ *
+ * This is usefull for code brevity but don't allow much error checking
+ *
+ * @param obj the json_object instance
+ * @param key the object field name (a private copy will be duplicated)
+ * @param val the integer to associate with the given field
+ * @return json_object created by json_object_new_int()
+ */
+extern json_object *json_object_object_add_int(json_object* obj, const char* key, int32_t val);
+
+/**
+ * Syntactic sugar to combine json_object_object_add() with json_object_new_int64()
+ *
+ * This is usefull for code brevity but don't allow much error checking
+ *
+ * @param obj the json_object instance
+ * @param key the object field name (a private copy will be duplicated)
+ * @param val the 64-bits integer to associate with the given field
+ * @return json_object created by json_object_new_int64()
+ */
+extern json_object *json_object_object_add_int64(json_object* obj, const char* key, int64_t val);
+
+/**
+ * Syntactic sugar to combine json_object_object_add() with json_object_new_double()
+ *
+ * This is usefull for code brevity but don't allow much error checking
+ *
+ * @param obj the json_object instance
+ * @param key the object field name (a private copy will be duplicated)
+ * @param val the double to associate with the given field
+ * @return json_object created by json_object_new_double()
+ */
+extern json_object *json_object_object_add_double(json_object* obj, const char* key, double val);
+
+/**
+ * Syntactic sugar to combine json_object_object_add() with json_object_new_boolean()
+ *
+ * This is usefull for code brevity but don't allow much error checking
+ *
+ * @param obj the json_object instance
+ * @param key the object field name (a private copy will be duplicated)
+ * @param val the boolean to associate with the given field
+ * @return json_object created by json_object_new_boolean()
+ */
+extern json_object *json_object_object_add_boolean(json_object* obj, const char* key, json_bool val);
+
+/**
+ * Syntactic sugar to combine json_object_object_add() with json_object_new_string()
+ *
+ * This is usefull for code brevity but don't allow much error checking
+ *
+ * @param obj the json_object instance
+ * @param key the object field name (a private copy will be duplicated)
+ * @param val the string to associate with the given field
+ * @return json_object created by json_object_new_string()
+ */
+extern json_object *json_object_object_add_string(json_object* obj, const char* key, const char* val);
+
+/**
+ * Syntactic sugar to combine json_object_object_add() with json_object_new_stringf()
+ *
+ * This is usefull for code brevity but don't allow much error checking
+ *
+ * @param obj the json_object instance
+ * @param key the object field name (a private copy will be duplicated)
+ * @param fmt the format for string to associate with the given field
+ * @return json_object created by json_object_new_stringf()
+ */
+extern json_object *json_object_object_add_stringf(json_object* obj, const char* key, const char* fmt, ...);
+
 #ifdef __cplusplus
 }
 #endif
